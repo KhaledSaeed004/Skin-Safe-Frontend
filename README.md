@@ -1,6 +1,6 @@
-# 🧴 Skin Safe – Frontend
+# 🟦 Skin Safe – Frontend
 
-Welcome to the **frontend** part of our graduation project **Skin Safe**, an AI-powered platform for skin cancer detection and awareness. This repo contains the client-side code written in React, powered by Vite and Tailwind CSS, with a modern and modular architecture.
+This is the **frontend** part of our graduation project **Skin Safe**, an AI-powered platform for skin cancer detection and awareness. This repo contains the client-side code written in React, powered by Vite and Tailwind CSS, with a modular architecture.
 
 ## 📦 Tech Stack
 
@@ -73,7 +73,7 @@ Backend integration is **not set up yet** — once we finalize our backend servi
 
 ## 🧪 TypeScript Usage
 
-Even though the project is primarily written in **JavaScript**, we use **TypeScript** _only_ in reusable `ui/` components. This improves auto-completion and type safety when importing these components across the app. No TypeScript setup is required by contributors unless modifying these components.
+Even though the project is primarily written in **JavaScript**, we use **TypeScript** _only_ in reusable `ui/` components. This improves auto-completion and type safety when importing these components across the app. No TypeScript setup is required by devs unless modifying these components.
 
 ---
 
@@ -83,7 +83,7 @@ Even though the project is primarily written in **JavaScript**, we use **TypeScr
 
 - Always create a **new branch** using the `dev/` prefix:
   ```bash
-  git checkout -b dev/your-feature-name
+  git checkout -b dev/your-name
   ```
 - Write clear commit messages.
 - Open a pull/merge request with a **descriptive title and summary**.
@@ -115,10 +115,11 @@ npm run format
 ## 🧩 TODO
 
 - [ ] Finalize backend service URLs & API integration
-- [ ] Add `.env.example` file
-- [ ] Decide on authentication flow and storage strategy
-- [ ] Set up CI workflow (e.g., GitHub Actions)
+- [ ] Add `.env` file
+- [ ] Decide on authentication flow, encryption and storage strategy
+- [ ] Discuss other project aspects with the rest of the team
+- [ ] بتنجان مقلي
 
 ---
 
-## 🙌 بالتوفيق
+## 🙌 بالتوفيق لينا إن شاء الله
