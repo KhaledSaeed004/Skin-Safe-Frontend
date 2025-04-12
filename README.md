@@ -120,6 +120,3 @@ npm run format
 - [ ] Discuss other project aspects with the rest of the team
 - [ ] بتنجان مقلي
 
----
-
-## 🙌 بالتوفيق لينا إن شاء الله
