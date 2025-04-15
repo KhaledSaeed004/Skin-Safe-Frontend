@@ -7,7 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const buttonVariants = cva(
-  "min-w-[120px] cursor-pointer min-h-10 rounded-md border border-transparent transition-all duration-300 ease-out",
+  "min-w-[120px] cursor-pointer py-1.5 rounded-md border border-transparent transition-all duration-300 ease-out",
   {
     variants: {
       variant: {
