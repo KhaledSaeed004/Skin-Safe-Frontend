@@ -1,45 +1,36 @@
-import { useState } from "react";
-
-import Button from "./components/ui/Button";
-import Input from "./components/ui/Input";
-import Select from "./components/ui/Select";
-
-// placeholder example
-const skinTone = [
-  { name: "Light", value: "light" },
-  { name: "Medium-Light", value: "medium-light" },
-  { name: "Medium", value: "medium" },
-  { name: "Medium-Dark", value: "medium-dark" },
-  { name: "Dark", value: "dark" },
-];
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AppLayout from "./components/AppLayout";
+import DoctorProfile from "./pages/DoctorProfile";
+import SignUp from "./pages/SignUp";
+import Home from "./pages/Home";
+import Scan from "./pages/Scan";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import PageNotFound from "./pages/PageNotFound";
+import AboutUs from "./pages/AboutUs";
+import History from "./pages/History";
+import Articles from "./pages/Articles";
 
 function App() {
-  const [value, setValue] = useState("");
-  const [selected, setSelected] = useState(skinTone[0]);
-
   return (
-    <>
-      <div className="flex h-screen flex-col items-center justify-center gap-2">
-        <div className="flex items-center justify-center gap-2">
-          <Input
-            className="min-w-2xs"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder="Enter your name"
-          />
-          <Button variant="primary">Login</Button>
-        </div>
-        <div className="flex items-center justify-center gap-2">
-          <div className="min-w-2xs">
-            <Select
-              options={skinTone}
-              value={selected}
-              onChange={setSelected}
-            />
-          </div>
-        </div>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/scan" element={<Scan />} />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/doctor">
+            <Route path=":name" element={<DoctorProfile />} />
+          </Route>
+        </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
