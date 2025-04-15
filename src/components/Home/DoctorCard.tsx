@@ -33,7 +33,7 @@ function DoctorCard({ variant = "portrait" }: DoctorCardProps) {
       <div className="mb-4 w-fit self-center overflow-hidden rounded-full">
         <img src="/female-doctor-avatar.png" alt="Doctor avatar" />
       </div>
-      <h3 className="mb-2 font-medium">Dr. Hend Khaled</h3>
+      <h3 className="mb-2 font-medium">Dr. Asmaa Ahmad</h3>
       <p className="mb-1 text-sm text-gray-500">Dermatologist</p>
       <p className="text-xs">13 years experience</p>
       <div className="mt-6 flex items-center justify-between">
