@@ -12,14 +12,17 @@ function NewsletterBanner() {
           facilisi nunc blandit nullam.
         </p>
       </span>
-      <form aria-label="Newsletter signup" className="relative mx-auto w-fit">
+      <form
+        aria-label="Newsletter signup"
+        className="relative mx-auto mt-10 w-fit"
+      >
         <label htmlFor="email" className="sr-only">
           Email address
         </label>
         <Input
           type="email"
           placeholder="Enter Your Email Address"
-          className="mt-10 min-w-md border-0 px-8 py-4 pr-14 text-sm hover:shadow-none"
+          className="min-w-md border-0 px-8 py-4 pr-14 text-sm hover:shadow-none"
         />
         <Button
           // type="submit"
@@ -27,7 +30,7 @@ function NewsletterBanner() {
             e.preventDefault();
             // alert("Sign up successful!");
           }}
-          className="active:bg-primary absolute top-1/2 right-2 min-w-fit px-2 hover:shadow-transparent active:scale-90 active:text-white"
+          className="active:bg-primary absolute top-1/2 right-2 min-w-fit -translate-y-1/2 px-2 hover:shadow-transparent active:scale-90 active:text-white"
         >
           <PaperAirplaneIcon className="h-5 w-5" aria-hidden="true" />
         </Button>
