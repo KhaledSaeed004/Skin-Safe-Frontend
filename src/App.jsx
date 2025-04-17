@@ -10,6 +10,7 @@ import PageNotFound from "./pages/PageNotFound";
 import AboutUs from "./pages/AboutUs";
 import History from "./pages/History";
 import Articles from "./pages/Articles";
+import ForgotPassword from "./pages/Passwordreset";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/history" element={<History />} />
+
           <Route path="/scan" element={<Scan />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/profile" element={<Profile />} />
@@ -28,6 +30,7 @@ function App() {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/resetpassword" element={<ForgotPassword />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
