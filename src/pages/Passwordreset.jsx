@@ -1,63 +1,47 @@
 import React from "react";
-import RightsideImage from "../components/ui/rightsideimage";
-import Header from "../components/Header";
+import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
+import { useSearchParams } from "react-router-dom";
+import PasswordConfirmation from "./Passwordconfirmation"; // Corrected import
+const Passwordreset = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isForgetedPassword = Boolean(searchParams.get("passwordconfirm"));
 
-const ForgotPassword = () => {
-  return (
-    <>
-    <Header/>
-    <div className="min-h-screen flex flex-col md:flex-row w-full">
-      {/* Left Side - Form */}
-      <div className="w-full md:w-1/2 flex justify-center items-center p-8">
-        <div className="max-w-md w-full">
-          {/* Logo */}
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">Skin Safe</h1>
+  return isForgetedPassword ? (
+    <PasswordConfirmation />
+  ) : (
+    <div className="mx-auto flex max-w-md flex-col gap-y-4 p-4 pt-10 text-center">
+      <h3 className="text-4xl font-semibold">Forgot Password?</h3>
+      <p className="text-gray-600">
+        Enter your email address or phone number, and we’ll send you a
+        confirmation code.
+      </p>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="text-primary w-[300px] self-center"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+        />
+      </svg>
 
-          {/* Heading */}
-          <h2 className="text-2xl font-semibold mb-2">Forgot Password?</h2>
-          <p className="text-gray-500 mb-6">
-            Enter your email address or phone number,<br />
-            we will send you a confirmation code.
-          </p>
-
-          {/* Icon */}
-          <div className="flex justify-center mb-4">
-            <div className="bg-blue-100 p-4 rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-blue-500"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 2a6 6 0 00-6 6v2a2 2 0 01-1 1.732V13h14v-1.268A2 2 0 0116 10V8a6 6 0 00-6-6zM4 14h12a2 2 0 01-2 2H6a2 2 0 01-2-2z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-          </div>
-
-          {/* Input */}
-          <input
-            type="text"
-            placeholder="Enter Your Email Or Phone Number"
-            className="w-full border border-blue-300 rounded-md px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-
-          {/* Button */}
-          <button
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-md transition"
-          >
-            Send the code
-          </button>
-        </div>
-      </div>
-
-      <RightsideImage/>
+      <Input type="text" placeholder="Enter your email or phone number" />
+      <Button
+        variant="primary"
+        onClick={() => {
+          setSearchParams({ passwordconfirm: true });
+        }}
+      >
+        Send the code
+      </Button>
     </div>
-    </>
   );
 };
 
-export default ForgotPassword;
+export default Passwordreset;
