@@ -2,6 +2,7 @@
 @import "tailwindcss";
 @theme {
     --default-font-family: "Poppins", sans-serif;
+    --color-white-bg: #fafafa;
     --color-primary: #4a90e2;
     --shadow-primary: 0 0 5px rgba(74, 144, 226, 1);
     --shadow-secondary: 0 0 5px rgba(74, 144, 226, 1);
