@@ -71,12 +71,15 @@ function Header() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-2">
-            <Button variant="primary">Login</Button>
-            <Button variant="secondary">Sign Up</Button>
+          <Link to="/login">
+  <Button variant="primary">Login</Button>
+</Link>
+<Link to="/signup">
+<Button variant="secondary">Sign up</Button>
+</Link>
           </div>
         </div>
-      </div>
+     
     </header>
   );
 }
