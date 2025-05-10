@@ -6,7 +6,7 @@ const cardData = [
     title: "Card Sun Exposure and Skin Cancer 1",
     description:
       "Exposure to ultraviolet (UV) radiation from the sun is a well-established risk factor for developing skin cancer. UV radiation damages the DNA in skin cells leading to mutations that can result in cancerous growths. Both cumulative sun exposure and intermittent intense exposure, such as sunburns, contribute to this risk.",
-    imageUrl: "../../public/beautiful-photo-sea-sky 1.png",
+    imageUrl: "../../public/yellow-fever-vaccine-concept 1.png",
   },
   {
     id: 2,

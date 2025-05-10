@@ -10,9 +10,13 @@ import PageNotFound from "./pages/PageNotFound";
 import AboutUs from "./pages/AboutUs";
 import History from "./pages/History";
 import Articles from "./pages/Articles";
-import ForgotPassword from "./pages/Passwordreset";
+import ForgotPassword from "./pages/ForgotPassword";
 import AuthLayout from "./components/ui/AuthLayout";
 import Passwordconfirmation from "./pages/Passwordconfirmation";
+import Passwordreset from  "./pages/Passwordreset"
+import Report from  "./pages/Report"
+import Article from "./pages/Article";
+import MyAppointments from "./pages/MyAppointments";
 
 function App() {
   return (
@@ -25,6 +29,9 @@ function App() {
           <Route path="/history" element={<History />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/article" element={<Article />} />
+          <Route path="/MyAppointments" element={<MyAppointments />} />
           <Route path="/doctor">
             <Route path=":name" element={<DoctorProfile />} />
           </Route>
@@ -32,10 +39,11 @@ function App() {
 
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/passwordconfirmation" element={<Passwordconfirmation/>} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/login/password-confirmation" element={<Passwordconfirmation />}   />
+          <Route path="/login/password-reset" element={<Passwordreset />} />
 
+          <Route path="/signup" element={<SignUp />} />
           {/* <Route path="login/passwordreset" element={<ForgotPassword />} /> */}
         </Route>
 

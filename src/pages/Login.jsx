@@ -1,19 +1,17 @@
 // pages/Login.jsx
 import React, { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Passwordreset from "./Passwordreset";
 import Select from "../components/ui/Select";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const isResettingPassword = Boolean(searchParams.get("passwordreset"));
+ 
 
-  return isResettingPassword ? (
-    <Passwordreset />
-  ) : (
+
+  return  (
     <div className="container p-4">
       <h2 className="mb-2 pt-1 text-center text-[40px] font-semibold">
         Welcome back
@@ -76,12 +74,10 @@ const Login = () => {
             Remember me
           </label>
 
-          <p
-            className="cursor-pointer"
-            onClick={() => setSearchParams({ passwordreset: true })}
-          >
-            Forgot Password?
-          </p>
+          <Link to="/forgot-password" className="text-gray-500 hover:text-blue-500 hover:underline">
+ <p> Forgot Password?</p>
+</Link>
+
         </div>
         <button
           type="submit"
