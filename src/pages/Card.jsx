@@ -6,21 +6,21 @@ const cardData = [
     title: "Card Sun Exposure and Skin Cancer 1",
     description:
       "Exposure to ultraviolet (UV) radiation from the sun is a well-established risk factor for developing skin cancer. UV radiation damages the DNA in skin cells leading to mutations that can result in cancerous growths. Both cumulative sun exposure and intermittent intense exposure, such as sunburns, contribute to this risk.",
-    imageUrl: "../../public/beautiful-photo-sea-sky 1.png",
+    imageUrl: "/beautiful-photo-sea-sky 1.png",
   },
   {
     id: 2,
     title: "New Vaccination to Prevent Skin Cancer",
     description:
       "Recent advancements in medical research have led to the development of personalized mRNA vaccines aimed at preventing the recurrence of melanoma, the most serious form of skin cancer. These vaccines work by training the immune system to recognize and attack specific proteins unique to an individual's tumor.",
-    imageUrl: "../../public/yellow-fever-vaccine-concept 1.png",
+    imageUrl: "/yellow-fever-vaccine-concept 1.png",
   },
   {
     id: 3,
     title: "New Vaccination to Prevent Skin Cancer",
     description:
       "Recent advancements in medical research have led to the development of personalized mRNA vaccines aimed at preventing the recurrence of melanoma, the most serious form of skin cancer. These vaccines work by training the immune system to recognize and attack specific proteins unique to an individual's tumor.",
-    imageUrl: "../../public/yellow-fever-vaccine-concept 1.png",
+    imageUrl: "/yellow-fever-vaccine-concept 1.png",
   },
 ];
 
@@ -48,7 +48,7 @@ const Card = () => {
             </div>
           </div>
           <div className="mt-4 flex items-end justify-start">
-            <button className="relative rounded-2xl border border-primary bg-transparent px-3 py-1.5 text-sm text-primary transition-all duration-300 hover:bg-primary hover:text-white">
+            <button className="border-primary text-primary hover:bg-primary relative rounded-2xl border bg-transparent px-3 py-1.5 text-sm transition-all duration-300 hover:text-white">
               Read More
               <svg
                 xmlns="http://www.w3.org/2000/svg"

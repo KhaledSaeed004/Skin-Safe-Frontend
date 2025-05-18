@@ -1,3 +1,5 @@
+export const BASE_URL = "https://skin-safe-two.vercel.app";
+
 export const NavBarItems = [{
         label: "Home",
         path: "/",
@@ -19,8 +21,8 @@ export const NavBarItems = [{
         path: "/articles",
     },
     {
-        label: "Profile",
-        path: "/profile",
+        label: "Doctors",
+        path: "/doctors",
     },
 ];
 

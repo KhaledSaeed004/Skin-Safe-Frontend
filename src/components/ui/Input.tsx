@@ -7,7 +7,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export default function Input({ className, ...props }: InputProps) {
   const classNames = cn(
-    "hover:shadow-gray rounded-lg border border-black bg-white px-4 py-2 text-black transition-all duration-300 ease-out placeholder:text-[#837D7D] focus:border-[#4a90e2] focus:shadow-none focus:outline-none focus:placeholder:text-[#4a90e2]",
+    "hover:shadow-gray rounded-lg border border-black bg-white px-4 py-2 text-black transition-all duration-300 ease-out placeholder:text-slate-400 focus:border-[#4a90e2] focus:shadow-none focus:outline-none focus:placeholder:text-[#4a90e2]",
     className,
   );
 

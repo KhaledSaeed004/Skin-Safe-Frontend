@@ -14,9 +14,9 @@ type Option = {
 
 type SelectProps = {
   options: Option[];
-  value: Option | null;
+  value: string | null; // Change value to string, not Option
   placeholder?: string;
-  onChange: (option: Option | null) => void;
+  onChange: (value: string | null) => void; // onChange should handle string, not Option
   className?: string;
 };
 
@@ -29,14 +29,17 @@ export default function Select({
 }: SelectProps) {
   return (
     <Listbox value={value} onChange={onChange}>
-      <div className={cn("relative w-full", className)}>
+      <div className={cn("relative w-full")}>
         <ListboxButton
           className={cn(
             "relative block w-full rounded-md border border-black py-1 pr-8 pl-3 text-left text-sm text-black",
             "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-black",
+            className,
           )}
         >
-          {value ? value.name : placeholder}
+          {value
+            ? options.find((option) => option.value === value)?.name
+            : placeholder}
           <ChevronDownIcon
             className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 fill-black"
             aria-hidden="true"
@@ -46,18 +49,18 @@ export default function Select({
           anchor="bottom"
           transition
           className={cn(
-            "mt-2 w-[var(--button-width)] rounded-md border border-black p-1",
+            "bg-white-bg absolute z-50 mt-2 w-[var(--button-width)] rounded-md border border-black p-1",
             "[--anchor-gap:var(--spacing-1)]",
-            "transition duration-100 ease-in focus:outline-none data-[leave]:data-[closed]:opacity-0",
+            "transition duration-100 ease-in focus:outline-none data-leave:data-closed:opacity-0",
           )}
         >
           {options.map((option) => (
             <ListboxOption
               key={option.value}
-              value={option}
-              className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none data-[focus]:bg-gray-200"
+              value={option.value}
+              className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none data-focus:bg-gray-200"
             >
-              <CheckIcon className="invisible size-4 fill-black group-data-[selected]:visible" />
+              <CheckIcon className="invisible size-4 fill-black group-data-selected:visible" />
               <div className="text-sm text-black">{option.name}</div>
             </ListboxOption>
           ))}

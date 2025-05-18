@@ -1,8 +1,5 @@
-import React from "react";
-import Passwordconfirmation from "./Passwordconfirmation";
-
 function History() {
-  return <Passwordconfirmation />;
+  return <div>History</div>;
 }
 
 export default History;

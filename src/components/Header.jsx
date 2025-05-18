@@ -1,13 +1,19 @@
 import Logo from "./ui/Logo";
 import Input from "./ui/Input";
 import Button from "./ui/Button";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  BellIcon,
+  MagnifyingGlassIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 import { NavBarItems } from "../utils/constants";
 import { Link, NavLink } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import { useAuth } from "../features/auth/useAuth";
 
 function Header() {
   const header = useRef(null);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const onScroll = () => {
@@ -51,7 +57,9 @@ function Header() {
         </div>
 
         {/* Main Navigation */}
-        <div className="flex items-center gap-8">
+        <div
+          className={`flex items-center ${isAuthenticated ? "gap-20" : "gap-8"}`}
+        >
           <nav aria-label="Main navigation">
             <ul className="flex items-center gap-6">
               {NavBarItems.map((item) => (
@@ -71,15 +79,27 @@ function Header() {
             </ul>
           </nav>
 
-          <Link to="/login">
-  <Button variant="primary">Login</Button>
-</Link>
-<Link to="/signup">
-<Button variant="secondary">Sign up</Button>
-</Link>
-          </div>
+          {isAuthenticated ? (
+            <div className="flex items-center space-x-6">
+              <Link to="/profile" title="Profile">
+                <UserCircleIcon className="h-6 w-6 text-gray-700 hover:text-gray-900" />
+              </Link>
+              <button className="cursor-pointer" title="Notifications">
+                <BellIcon className="h-6 w-6 text-gray-700 hover:text-gray-900" />
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="primary">Login</Button>
+              </Link>
+              <Link to="/signup">
+                <Button variant="secondary">Sign up</Button>
+              </Link>
+            </>
+          )}
         </div>
-     
+      </div>
     </header>
   );
 }
