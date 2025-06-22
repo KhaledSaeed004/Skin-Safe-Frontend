@@ -2,18 +2,23 @@ import Logo from "./ui/Logo";
 import Input from "./ui/Input";
 import Button from "./ui/Button";
 import {
+  ArrowLeftStartOnRectangleIcon,
   BellIcon,
   MagnifyingGlassIcon,
   UserCircleIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 import { NavBarItems } from "../utils/constants";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { useAuth } from "../features/auth/useAuth";
+import Notifications from "./ui/Notifications";
+import Menus from "./ui/Menus";
 
 function Header() {
   const header = useRef(null);
   const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => {
@@ -30,6 +35,10 @@ function Header() {
 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const handleLogout = () => {
+    console.log("Simulating logout...");
+  };
 
   return (
     <header
@@ -81,12 +90,43 @@ function Header() {
 
           {isAuthenticated ? (
             <div className="flex items-center space-x-6">
-              <Link to="/profile" title="Profile">
+              {/* <Link to="/profile" title="Profile">
                 <UserCircleIcon className="h-6 w-6 text-gray-700 hover:text-gray-900" />
-              </Link>
-              <button className="cursor-pointer" title="Notifications">
-                <BellIcon className="h-6 w-6 text-gray-700 hover:text-gray-900" />
-              </button>
+              </Link> */}
+              <Menus>
+                <Menus.Menu>
+                  <Menus.Toggle
+                    id="user-menu"
+                    title="Profile"
+                    className="relative cursor-pointer rounded-full border-none bg-none p-2 transition-all duration-200 hover:bg-gray-400/25"
+                  >
+                    <UserCircleIcon className="h-6 w-6" />
+                  </Menus.Toggle>
+                  <Menus.List id="user-menu">
+                    <Menus.Item
+                      icon={<UserIcon className="text-gray-600" />}
+                      onClick={() => navigate("/profile")}
+                      title="Profile"
+                      aria-label="profiel link"
+                    >
+                      Profile
+                    </Menus.Item>
+                    <Menus.Item
+                      icon={
+                        <ArrowLeftStartOnRectangleIcon className="text-red-500" />
+                      }
+                      onClick={handleLogout}
+                      title="Logout"
+                      aria-label="logout button"
+                    >
+                      Logout
+                    </Menus.Item>
+                  </Menus.List>
+                </Menus.Menu>
+              </Menus>
+              <span className="cursor-pointer" title="Notifications">
+                <Notifications />
+              </span>
             </div>
           ) : (
             <>

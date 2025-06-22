@@ -1,31 +1,26 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import ReviewCard from "./ReviewCard";
 import Button from "../ui/Button";
-
-const dummyReview = {
-  name: "Youssef Emad",
-  image: "/reviewer-avatar.jpg",
-  rate: "5.0",
-  date: "20 January 2024 at 12:00 PM",
-  comment:
-    "My skin has improved significantly since starting treatment, and I couldn’t be happier with the results. I truly appreciate their expertise and compassionate care. I highly recommend Dr. Hady to anyone looking for a skilled and caring dermatologist.",
-};
-
-const reviews = [...Array(30)].fill(dummyReview);
+import { useDoctroReviews } from "../../features/doctorProfile/useDoctorReviews";
+import { SkeletonReviewCard } from "./ReviewCardSkeleton";
 
 const REVIEWS_PER_PAGE = 4;
 
-// props should be: reviews array of objects with the following properties: name, image, rate, date, comment
-export default function DoctorReviews() {
+export default function DoctorReviews({ id }) {
+  const { reviews = [], isLoading, error } = useDoctroReviews(id);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
+  const totalPages = useMemo(() => {
+    if (isLoading || !Array.isArray(reviews)) return 1;
+    return Math.ceil(reviews.length / REVIEWS_PER_PAGE);
+  }, [reviews, isLoading]);
 
-  const getVisibleReviews = () => {
+  const getVisibleReviews = useMemo(() => {
+    if (isLoading || !Array.isArray(reviews)) return [];
     const start = (currentPage - 1) * REVIEWS_PER_PAGE;
     const end = start + REVIEWS_PER_PAGE;
     return reviews.slice(start, end);
-  };
+  }, [currentPage, reviews, isLoading]);
 
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -71,7 +66,13 @@ export default function DoctorReviews() {
     return pages;
   };
 
-  return (
+  return isLoading ? (
+    <div className="mt-4 space-y-4">
+      {Array.from({ length: REVIEWS_PER_PAGE }).map((_, i) => (
+        <SkeletonReviewCard key={i} />
+      ))}
+    </div>
+  ) : reviews?.length > 0 ? (
     <div className="mt-4 space-y-4">
       {getVisibleReviews().map((review, index) => (
         <ReviewCard key={index} {...review} />
@@ -118,6 +119,12 @@ export default function DoctorReviews() {
           <ChevronRightIcon className="h-4 w-4" />
         </Button>
       </div>
+    </div>
+  ) : (
+    <div className="flex w-full items-center justify-center p-4">
+      <p className="text-gray-500">
+        No reviews available yet. Be the first to review this doctor!
+      </p>
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { ShieldCheckIcon } from "@heroicons/react/24/outline";
 import NewsletterBanner from "../components/Home/NewsletterBanner";
 import {
@@ -10,13 +12,22 @@ import {
 import UVIndex from "../components/Home/UVIndex";
 import DoctorCard from "../components/Home/DoctorCard";
 import ScrollableCarousel from "../components/ui/ScrollableCarousel";
+import { useDoctors } from "../features/home/useDoctors";
+import DoctorCardSkeleton from "../components/Home/DoctorCardSkeleton";
 
 function Home() {
+  const { doctors, isLoading, error } = useDoctors();
+  // const { recentlySearchedDoctors, isLoading: isLoadingRecentSearches, error: recentSearchesError } = useRecentlySearchedDoctors();
+  const { recentlySearchedDoctors, isLoading: isLoadingRecentSearches } = {
+    recentlySearchedDoctors: [],
+    isLoading: false,
+  }; // Mocking the hook for now
+
   return (
     <>
       <section className="flex items-center justify-between pt-12 pb-6">
         <div>
-          <h1 className="max-w-md text-5xl leading-14 font-semibold">
+          <h1 className="text-primary-text max-w-md text-5xl leading-14 font-semibold">
             <span className="text-primary">Early</span> Detection for Peace of
             mind
           </h1>
@@ -65,31 +76,58 @@ function Home() {
       <section>
         <h2 className="mb-4 text-xl font-medium">Top Doctors</h2>
         <ScrollableCarousel>
-          <DoctorCard />
-          <DoctorCard />
-          <DoctorCard />
-          <DoctorCard />
-          <DoctorCard />
-          <DoctorCard />
-          <DoctorCard />
-          <DoctorCard />
+          {isLoading
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <DoctorCardSkeleton key={index} />
+              ))
+            : doctors?.map((doctor) => (
+                <DoctorCard key={doctor.id} doctor={doctor} />
+              ))}
+          {error && (
+            <div className="flex w-full items-center justify-center">
+              <p className="text-red-500">
+                Failed to load doctors: {error.message}
+              </p>
+            </div>
+          )}
         </ScrollableCarousel>
       </section>
-      <section className="mt-4">
+      <section className="relative mt-4">
         <h2 className="mb-4 text-xl font-medium">Recent Searches</h2>
-        <ScrollableCarousel>
-          <DoctorCard variant="landscape" />
-          <DoctorCard variant="landscape" />
-          <DoctorCard variant="landscape" />
-          <DoctorCard variant="landscape" />
-          <DoctorCard variant="landscape" />
-          <DoctorCard variant="landscape" />
-          <DoctorCard variant="landscape" />
-          <DoctorCard variant="landscape" />
-        </ScrollableCarousel>
+        {isLoadingRecentSearches ? (
+          <ScrollableCarousel>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <DoctorCardSkeleton key={index} variant="landscape" />
+            ))}
+          </ScrollableCarousel>
+        ) : recentlySearchedDoctors?.length > 0 ? (
+          <ScrollableCarousel>
+            {recentlySearchedDoctors.map((doctor) => (
+              <DoctorCard key={doctor.id} doctor={doctor} />
+            ))}
+          </ScrollableCarousel>
+        ) : (
+          <>
+            <div className="absolute inset-0 z-10 mt-8 flex cursor-default items-center justify-center bg-blue-50/25 backdrop-blur-xs">
+              <h5>
+                No recent searches yet. Start by searching for a doctor or a
+                skin condition.
+              </h5>
+            </div>
+            <ScrollableCarousel className="z-0 overflow-hidden">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <DoctorCardSkeleton
+                  key={index}
+                  variant="landscape"
+                  staticMode
+                />
+              ))}
+            </ScrollableCarousel>
+          </>
+        )}
       </section>
       <section className="my-4 p-4">
-        <h2 className="mb-4 text-center text-xl font-medium">
+        <h2 className="text-primary-text mx-auto mb-4 max-w-xs text-center text-xl font-medium">
           Exceptionally High Standards Of Skin Cancer Detection
         </h2>
         <div className="flex flex-nowrap space-x-4">
@@ -131,7 +169,57 @@ function Home() {
           </div>
         </div>
       </section>
-      <NewsletterBanner />
+      <section className="my-4 p-4">
+        <div className="flex items-center justify-between">
+          <div className="max-w-lg">
+            <h4 className="text-primary-text mb-2 text-3xl leading-10 font-bold">
+              Download App for your mobile now!
+            </h4>
+            <p className="text-secondary-text mb-6 text-sm leading-5">
+              AI-Dermatologist is an innovative prediagnostic app helping you
+              monitor your skin health and detect any unusual or alerting skin
+              conditions so you could contact healthcare providers in time and
+              avoid undesirable consequences.
+            </p>
+            <div>
+              {/* Apple store & google play buttons */}
+              <div className="mt-4 flex items-center gap-4">
+                <a
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href="https://www.apple.com/app-store/"
+                  className="w-40"
+                >
+                  <img
+                    src="/apple-store-button.png"
+                    alt="App Store"
+                    className="size-full"
+                  />
+                </a>
+                <a
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href="https://play.google.com/store"
+                  className="w-40"
+                >
+                  <img
+                    src="/play-store-button.png"
+                    alt="Google Play"
+                    className="size-full"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+          <div>
+            <img
+              src="/skin_safe_phone_mockup.png"
+              alt="Mobile app preview"
+              className="max-w-xl"
+            />
+          </div>
+        </div>
+      </section>
     </>
   );
 }

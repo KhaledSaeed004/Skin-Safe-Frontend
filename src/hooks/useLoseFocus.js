@@ -1,39 +1,41 @@
 import { useEffect, useRef } from "react";
 
-export function useLoseFocus({ onClickAway, preventbubbling = true }) {
-    const ref = useRef(null);
+export function useLoseFocus({ onClickAway, preventbubbling = true, id }) {
+  const ref = useRef(null);
 
-    useEffect(() => {
-        const handleClickAway = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) {
-                onClickAway();
-            }
-        };
+  useEffect(() => {
+    const handleClickAway = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        onClickAway();
+      }
+    };
 
-        const handleDismiss = (e) => {
-            if (e.key === "Escape") {
-                if (ref.current) {
-                    onClickAway();
-                }
-            }
-        };
+    const handleDismiss = (e) => {
+      if (e.key === "Escape") {
+        onClickAway();
+      }
+    };
 
-        document.addEventListener("click", handleClickAway, preventbubbling);
-        document.addEventListener("keydown", handleDismiss, preventbubbling);
+    const handleOtherMenuOpen = (event) => {
+      if (event.detail !== id) {
+        onClickAway();
+      }
+    };
 
-        return () => {
-            document.removeEventListener(
-                "click",
-                handleClickAway,
-                preventbubbling
-            );
-            document.removeEventListener(
-                "keydown",
-                handleDismiss,
-                preventbubbling
-            );
-        };
-    }, [onClickAway, preventbubbling]);
+    document.addEventListener("click", handleClickAway, preventbubbling);
+    document.addEventListener("keydown", handleDismiss, preventbubbling);
+    window.addEventListener("menu-open", handleOtherMenuOpen, preventbubbling);
 
-    return { ref };
+    return () => {
+      document.removeEventListener("click", handleClickAway, preventbubbling);
+      document.removeEventListener("keydown", handleDismiss, preventbubbling);
+      window.removeEventListener(
+        "menu-open",
+        handleOtherMenuOpen,
+        preventbubbling,
+      );
+    };
+  }, [onClickAway, preventbubbling, id]);
+
+  return { ref };
 }

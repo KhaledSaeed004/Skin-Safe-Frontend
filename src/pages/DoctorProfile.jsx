@@ -15,12 +15,25 @@ import DoctorReviews from "../components/Doctor Profile/DoctorReviews";
 import Button from "../components/ui/Button";
 import Modal from "../components/ui/Modal";
 import AppointmentBookingPopup from "../components/AppointmentBookingPopup";
+import { useDoctor } from "../features/doctorProfile/useDoctor";
 
 function DoctorProfile() {
-  const { name } = useParams();
+  const { id } = useParams();
+  const { data = {}, isLoading, error } = useDoctor(id);
+  const {
+    firstName,
+    secondName,
+    experience,
+    specialty,
+    ratingsAverage,
+    about,
+    certificate,
+  } = data;
   const [isExpanded, setIsExpanded] = useState(false);
 
-  return (
+  return isLoading ? (
+    <p>Loading...</p>
+  ) : (
     <main>
       {/* Doctor Cover & Avatar */}
       <div className="relative pt-8">
@@ -42,10 +55,12 @@ function DoctorProfile() {
       {/* Doctor Name & Specialization */}
       <div className="mt-28 px-8">
         <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-semibold">{name}</h2>
+          <h2 className="text-2xl font-semibold">
+            Dr. {firstName} {secondName}
+          </h2>
           <span className="inline-flex items-center gap-1 rounded-md border border-gray-300 px-2 py-1 text-xs tracking-wide text-gray-700">
             <span className="bg-primary inline-block size-2 rounded-full" />
-            Dermatologist
+            {specialty}
           </span>
         </div>
 
@@ -68,7 +83,7 @@ function DoctorProfile() {
             {/* <span className="inline-block size-2 rounded-full bg-gray-500" /> */}
             <span className="inline-flex items-center gap-1 text-sm text-gray-700">
               <StarIcon className="h-5 w-5" />
-              4.5
+              {ratingsAverage ? ratingsAverage.toFixed(1) : "N/A"}
             </span>
             <Modal>
               <Modal.OpenBtn opens="doctor-booking">
@@ -86,32 +101,14 @@ function DoctorProfile() {
         {/* Doctor Profile */}
         <div>
           <div className="space-y-3">
-            <h3 className="text-lg font-medium">About {name}</h3>
+            <h3 className="text-lg font-medium">About Dr. {firstName}</h3>
             <div className="relative">
               <div className="relative">
                 <p
                   className={`text-gray-600 ${!isExpanded && "line-clamp-4"} transition-all duration-300 ease-in-out`}
                 >
-                  Dr. Hady is a highly skilled dermatologist based with a
-                  specialized focus on skin cancer diagnosis, treatment, and
-                  prevention. With 12 years of experience in dermatology, Dr.
-                  Hady has dedicated their career to providing advanced care for
-                  patients with various skin conditions, including melanoma and
-                  non-melanoma skin cancers. Dr. Hady is committed to early
-                  detection and personalized treatment plans, utilizing
-                  state-of-the-art techniques such as dermoscopy, mole mapping,
-                  and minimally invasive procedures. Passionate about patient
-                  education and skin health, they actively raise awareness about
-                  skin cancer prevention and the importance of regular skin
-                  screenings. Dr. Hady earned their medical degree from Cairo
-                  University and completed specialized training in dermatologic
-                  oncology at National Institute of Laser Enhanced Sciences
-                  (NILES) Cairo University. They are a member of the Egyptian
-                  Society of Dermatology and Venereology (ESDV) and continuously
-                  stay updated with the latest advancements in dermatology. For
-                  consultations and appointments, Dr. Hady welcomes patients at
-                  his clinic, offering expert dermatological care with a
-                  patient-centered approach.
+                  {about ||
+                    `Dr. ${firstName} has not provided any information about their background yet.`}
                 </p>
                 {!isExpanded && (
                   <div className="from-white-bg pointer-events-none absolute right-0 bottom-0 left-0 h-10 bg-gradient-to-t to-transparent" />
@@ -140,7 +137,7 @@ function DoctorProfile() {
         {/* Doctor Reviews */}
         <div>
           <h3 className="text-lg font-medium">Doctor's Reviews</h3>
-          <DoctorReviews />
+          <DoctorReviews id={id} />
         </div>
       </div>
     </main>
