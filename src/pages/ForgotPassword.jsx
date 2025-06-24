@@ -1,25 +1,53 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
+import { usePasswordResetRequest } from "../features/passwordReset/usePasswordResetRequest";
+import { useForm } from "react-hook-form";
+import FormFieldError from "../components/ui/FormFieldError";
+import { useState } from "react";
+import OTPForm from "./OTPForm";
+import { usePasswordResetOTP } from "../features/passwordReset/usePasswordResetOTP";
+import usePasswordResetStore from "../features/passwordReset/PasswordResetStore";
+import Spinner from "../components/ui/Spinner";
 
 const ForgotPassword = () => {
-  const [contactInfo, setContactInfo] = useState("");
-  const [error, setError] = useState("");
+  const [step, setStep] = useState("email");
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const { requestPasswordChange, isLoading, error } = usePasswordResetRequest();
+  const {
+    submitPasswordResetOTP,
+    isLoading: isConfirmingOTP,
+    error: OTPError,
+  } = usePasswordResetOTP();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!contactInfo) {
-      setError("Please enter your email or phone number.");
-      return;
-    }
-    // Add logic to send confirmation code (e.g., API call)
-    console.log("Sending code to:", contactInfo);
-    // Navigate programmatically or handle success
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const { setEmail } = usePasswordResetStore();
+
+  const onSubmit = (formData) => {
+    requestPasswordChange(
+      { email: formData.email },
+      {
+        onSuccess: () => {
+          setEmail(formData.email);
+          setStep("otp");
+        },
+      },
+    );
   };
 
-  return (
-    <div className="mx-auto flex max-w-md flex-col gap-y-4 p-4 pt-10 text-center">
+  const onOTPSubmit = () => {
+    submitPasswordResetOTP({
+      resetCode: otp.join(""),
+      token: localStorage.getItem("passwordreset_otp_token"),
+    });
+  };
+
+  return step === "email" ? (
+    <div className="relative mx-auto mt-8 flex max-w-2xl flex-col gap-y-4 overflow-hidden p-20 pt-10 text-center">
       <h3 className="text-4xl font-semibold">Forgot Password?</h3>
       <p className="text-gray-600">
         Enter your email address or phone number, and we’ll send you a
@@ -31,7 +59,7 @@ const ForgotPassword = () => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="text-primary w-full max-w-[300px] self-center"
+        className="text-primary w-[300px] self-center"
       >
         <path
           strokeLinecap="round"
@@ -40,28 +68,70 @@ const ForgotPassword = () => {
         />
       </svg>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
-        <label htmlFor="contact-info" className="sr-only">
-          Email or Phone Number
-        </label>
-        <Input
-          id="contact-info"
-          type="text"
-          placeholder="Enter your email or phone number"
-          value={contactInfo}
-          onChange={(e) => {
-            setContactInfo(e.target.value);
-            setError("");
-          }}
-        />
-        {error && <p className="text-sm text-red-500">{error}</p>}
-        <Link to="/login/password-confirmation">
-          <Button type="submit" variant="primary">
-            Send the code
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+        {error && (
+          <FormFieldError
+            message={
+              error.message || "An error occurred. Please try again later."
+            }
+            className="text-left"
+          />
+        )}
+        {OTPError && (
+          <FormFieldError
+            message={
+              OTPError.message || "An error occurred. Please try again later."
+            }
+            className="text-left"
+          />
+        )}
+        <div className="flex items-center gap-4">
+          <Input
+            placeholder="Enter your email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message: "Please enter a valid email address",
+              },
+            })}
+            className={
+              errors.email &&
+              "border-red-500 focus:border-red-500 focus:placeholder:text-slate-400"
+            }
+            type="email"
+          />
+          <Button
+            type="submit"
+            disabled={isLoading}
+            variant="primary"
+            className="bg-blue-500 px-4 py-2 disabled:pointer-events-none disabled:opacity-50"
+          >
+            {isLoading ? (
+              <>
+                <Spinner />
+                <span>Verifying...</span>
+              </>
+            ) : (
+              "Send code"
+            )}
           </Button>
-        </Link>
+        </div>
+        {errors.email && (
+          <FormFieldError
+            message={errors.email.message}
+            className="text-left"
+          />
+        )}
       </form>
     </div>
+  ) : (
+    <OTPForm
+      otp={otp}
+      setOTP={setOtp}
+      handleSubmit={handleSubmit(onOTPSubmit)}
+      isConfirmingOTP={isConfirmingOTP}
+    />
   );
 };
 

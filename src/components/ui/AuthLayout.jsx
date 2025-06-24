@@ -1,13 +1,19 @@
 // src/layouts/AuthLayout.jsx
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
   return (
     <div className="flex min-h-screen w-full overflow-hidden">
       {/* Logo */}
-      <div className="absolute z-10 p-4">
-        <img src="/skin-safe-web-logo.svg" alt="logo" className="h-12 w-auto" />
+      <div className="absolute z-40 p-8">
+        <Link to="/">
+          <img
+            src="/skin-safe-web-logo.svg"
+            alt="logo"
+            className="h-10 w-auto"
+          />
+        </Link>
       </div>
 
       {/* Left Content - will hold Login, Signup, etc. */}
@@ -16,11 +22,11 @@ const AuthLayout = () => {
       </div>
 
       {/* Right Image */}
-      <div className="hidden w-1/2 lg:block">
+      <div className="hidden h-screen w-1/2 lg:block">
         <img
           src="/women.png"
           alt="Auth Visual"
-          className="h-full w-full object-cover opacity-50"
+          className="h-full w-full object-cover object-top opacity-50"
         />
       </div>
     </div>

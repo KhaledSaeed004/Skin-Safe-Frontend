@@ -26,12 +26,11 @@ const History = () => {
               />
               <p>{report.time}</p>
             </div>
-            <Button variant='primary'>View</Button>
+            <Button variant="primary">View</Button>
           </div>
         ))}
       </div>
     </div>
   );
 };
-
 export default History;

@@ -3,18 +3,18 @@ import { UVIndexRiskLevel } from "../../utils/UVIndex";
 import { useEffect, useState } from "react";
 
 function UVIndex() {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(6);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setValue((prevValue) => prevValue + 1);
-      if (value === 12) {
-        setValue(0);
-      }
-    }, 500);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setValue((prevValue) => prevValue + 1);
+  //     if (value === 12) {
+  //       setValue(0);
+  //     }
+  //   }, 500);
 
-    return () => clearInterval(interval);
-  }, [value]);
+  //   return () => clearInterval(interval);
+  // }, [value]);
 
   return (
     <div className="bg-primary my-6 flex w-full max-w-6xl justify-around self-center rounded-3xl px-20 py-14 text-white">
