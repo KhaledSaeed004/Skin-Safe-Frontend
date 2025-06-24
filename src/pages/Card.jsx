@@ -37,7 +37,7 @@ const Card = () => {
               <img
                 src={card.imageUrl}
                 alt={card.title}
-                className="h-auto w-full transform transition duration-500 ease-in-out group-hover:scale-110 group-hover:rotate-1 group-hover:brightness-110"
+                className="h-auto w-full transform transition duration-500 ease-in-out group-hover:rotate-1 group-hover:scale-110 group-hover:brightness-110"
               />
             </div>
             <div className="mt-4 text-center">

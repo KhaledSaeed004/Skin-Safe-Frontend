@@ -77,7 +77,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute top-1/2 right-3 -translate-y-1/2 transform cursor-pointer text-sm text-gray-500 hover:text-gray-700"
+                className="absolute right-3 top-1/2 -translate-y-1/2 transform cursor-pointer text-sm text-gray-500 hover:text-gray-700"
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 title={showPassword ? "Hide password" : "Show password"}
               >
@@ -124,9 +124,9 @@ const Login = () => {
       </form>
 
       <div className="relative my-6 text-center text-sm text-gray-500">
-        <span className="absolute top-1/2 left-0 w-1/3 -translate-y-1/2 border-t border-gray-300"></span>
+        <span className="absolute left-0 top-1/2 w-1/3 -translate-y-1/2 border-t border-gray-300"></span>
         Or Sign in with
-        <span className="absolute top-1/2 right-0 w-1/3 -translate-y-1/2 border-t border-gray-300"></span>
+        <span className="absolute right-0 top-1/2 w-1/3 -translate-y-1/2 border-t border-gray-300"></span>
       </div>
 
       <div className="mb-6 space-y-4">
@@ -139,7 +139,6 @@ const Login = () => {
           Sign in with Google
         </button>
       </div>
-
       <p className="mt-4 text-center text-sm">
         Don’t have an account?{" "}
         <Link to="/signup" className="font-semibold text-blue-500">
