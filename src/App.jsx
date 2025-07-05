@@ -1,10 +1,9 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
 import DoctorProfile from "./pages/DoctorProfile";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Scan from "./pages/Scan";
-import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import AboutUs from "./pages/AboutUs";
@@ -17,6 +16,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import ConfirmSignup from "./pages/ConfirmSignup";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ProfileLayout from "./pages/Profile/ProfileLayout";
+import ProfileInfo from "./pages/Profile/ProfileInfo";
+import ProfileHistory from "./pages/Profile/ProfileHistory";
+import ProfileAppointments from "./pages/Profile/ProfileAppointments";
+import ProfileSettings from "./pages/Profile/ProfileSettings";
+import Article from "./pages/Article";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,9 +46,19 @@ function App() {
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/history" element={<History />} />
             <Route path="/articles" element={<Articles />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/articles/:id" element={<Article />} />
             <Route path="/doctor">
               <Route path=":id" element={<DoctorProfile />} />
+            </Route>
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/user" element={<ProfileLayout />}>
+              <Route index element={<Navigate to="profile" replace />} />
+              <Route path="profile" element={<ProfileInfo />} />
+              <Route path="history" element={<ProfileHistory />} />
+              <Route path="appointments" element={<ProfileAppointments />} />
+              <Route path="settings" element={<ProfileSettings />} />
             </Route>
           </Route>
 
