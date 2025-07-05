@@ -14,10 +14,11 @@ import { useEffect, useRef } from "react";
 import { useAuth } from "../features/auth/useAuth";
 import Notifications from "./ui/Notifications";
 import Menus from "./ui/Menus";
+import Spinner from "./ui/Spinner";
 
 function Header() {
   const header = useRef(null);
-  const { isAuthenticated } = useAuth();
+  const { loading, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,7 +38,7 @@ function Header() {
   }, []);
 
   const handleLogout = () => {
-    console.log("Simulating logout...");
+    logout();
   };
 
   return (
@@ -105,7 +106,7 @@ function Header() {
                   <Menus.List id="user-menu">
                     <Menus.Item
                       icon={<UserIcon className="text-gray-600" />}
-                      onClick={() => navigate("/profile")}
+                      onClick={() => navigate("/user")}
                       title="Profile"
                       aria-label="profiel link"
                     >
@@ -128,6 +129,10 @@ function Header() {
                 <Notifications />
               </span>
             </div>
+          ) : loading ? (
+            <>
+              <Spinner className="h-6 w-6 text-gray-500" />
+            </>
           ) : (
             <>
               <Link to="/login">

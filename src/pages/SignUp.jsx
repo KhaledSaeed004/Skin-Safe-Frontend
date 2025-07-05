@@ -215,10 +215,10 @@ export default function SignUp() {
                 className="w-48 bg-blue-500 py-2 disabled:pointer-events-none disabled:opacity-50"
               >
                 {isConfirmingOTP ? (
-                  <>
-                    <Spinner />
-                    <span>Verifying...</span>
-                  </>
+                  <span className="flex items-center justify-center">
+                    <Spinner className="mr-2 h-4 w-4 animate-spin text-white" />
+                    Verifying...
+                  </span>
                 ) : (
                   "Verify code"
                 )}
@@ -231,10 +231,10 @@ export default function SignUp() {
                 className="w-48 bg-blue-500 py-2 disabled:pointer-events-none disabled:opacity-50"
               >
                 {isLoading ? (
-                  <>
-                    <Spinner />
-                    <span>Loading...</span>
-                  </>
+                  <span className="flex items-center justify-center">
+                    <Spinner className="mr-2 h-4 w-4 animate-spin text-white" />
+                    Loading...
+                  </span>
                 ) : step === 1 ? (
                   "Sign Up"
                 ) : (

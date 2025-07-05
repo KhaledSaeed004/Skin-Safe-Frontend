@@ -77,7 +77,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 transform cursor-pointer text-sm text-gray-500 hover:text-gray-700"
+                className="absolute top-1/2 right-3 -translate-y-1/2 transform cursor-pointer text-sm text-gray-500 hover:text-gray-700"
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 title={showPassword ? "Hide password" : "Show password"}
               >
@@ -113,10 +113,10 @@ const Login = () => {
           className="w-full bg-blue-500 py-2 disabled:pointer-events-none disabled:opacity-50"
         >
           {isLoading ? (
-            <>
-              <Spinner />
-              <span>Loading...</span>
-            </>
+            <span className="flex items-center justify-center">
+              <Spinner className="mr-2 h-4 w-4 animate-spin text-white" />
+              Loading...
+            </span>
           ) : (
             "Log In"
           )}
@@ -124,9 +124,9 @@ const Login = () => {
       </form>
 
       <div className="relative my-6 text-center text-sm text-gray-500">
-        <span className="absolute left-0 top-1/2 w-1/3 -translate-y-1/2 border-t border-gray-300"></span>
+        <span className="absolute top-1/2 left-0 w-1/3 -translate-y-1/2 border-t border-gray-300"></span>
         Or Sign in with
-        <span className="absolute right-0 top-1/2 w-1/3 -translate-y-1/2 border-t border-gray-300"></span>
+        <span className="absolute top-1/2 right-0 w-1/3 -translate-y-1/2 border-t border-gray-300"></span>
       </div>
 
       <div className="mb-6 space-y-4">

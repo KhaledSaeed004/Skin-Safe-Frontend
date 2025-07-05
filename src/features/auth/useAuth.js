@@ -1,24 +1,37 @@
-import { useEffect, useState } from "react";
-import { getAuthToken, getAuthUser } from "../../utils/authStorage";
+import { useState, useEffect } from "react";
+import {
+  clearAuthData,
+  getAuthToken,
+  setAuthToken,
+} from "../../utils/authStorage";
 
 export const useAuth = () => {
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const storedToken = getAuthToken();
-        const storedUser = getAuthUser();
+  useEffect(() => {
+    const storedToken = getAuthToken();
+    if (storedToken) setToken(storedToken);
+    setLoading(false);
+  }, []);
 
-        if (storedToken && storedUser) {
-            setToken(storedToken);
-            setUser(storedUser);
-        }
+  const updateToken = (newToken) => {
+    setAuthToken(newToken);
+    setToken(newToken);
+  };
 
-        setLoading(false);
-    }, []);
+  const logout = () => {
+    clearAuthData();
+    setToken(null);
+  };
 
-    const isAuthenticated = !!token && !!user;
+  const isAuthenticated = !!token;
 
-    return { user, token, isAuthenticated, loading };
+  return {
+    token,
+    updateToken,
+    logout,
+    isAuthenticated,
+    loading,
+  };
 };
