@@ -1,4 +1,4 @@
-import { format, parse, parseISO } from "date-fns";
+import { format, isValid, parse, parseISO } from "date-fns";
 import { CameraIcon } from "../../utils/Icons";
 import { useOutletContext } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
@@ -57,9 +57,21 @@ export default function ProfileInfo() {
     );
   }
 
-  const formattedDateOfBirth = user?.dateOfBirth
-    ? format(parseISO(user.dateOfBirth), "MMM dd, yyyy")
-    : "Unknown";
+  const formattedDateOfBirth = (() => {
+    const raw = user?.dateOfBirth;
+    if (!raw) return "Unknown";
+
+    let parsed;
+
+    // Try ISO format first
+    parsed = parseISO(raw);
+    if (!isValid(parsed)) {
+      // Fallback: Try dd-MM-yyyy
+      parsed = parse(raw, "dd-MM-yyyy", new Date());
+    }
+
+    return isValid(parsed) ? format(parsed, "MMM dd, yyyy") : "Unknown";
+  })();
 
   const {
     register,
@@ -73,6 +85,11 @@ export default function ProfileInfo() {
 
   useEffect(() => {
     if (user) {
+      const raw = user.dateOfBirth;
+      let parsed = parseISO(raw);
+      if (!isValid(parsed)) {
+        parsed = parse(raw, "dd-MM-yyyy", new Date());
+      }
       reset({
         name: user.name,
         userName: user.userName,
@@ -80,27 +97,34 @@ export default function ProfileInfo() {
         phoneNumber: user.phoneNumber,
         gender: user.gender,
         skinTone: user.skinTone,
-        dateOfBirth: user.dateOfBirth
-          ? format(parseISO(user.dateOfBirth), "yyyy-MM-dd")
-          : "",
+        dateOfBirth: isValid(parsed) ? format(parsed, "yyyy-MM-dd") : "",
       });
     }
   }, [user, reset]);
 
   const onSubmit = async (data) => {
-    const updatedDOB = new Date(data.dateOfBirth).toISOString();
+    const birthDate = new Date(data.dateOfBirth);
+
+    const updatedDOB = isValid(birthDate)
+      ? format(birthDate, "dd-MM-yyyy")
+      : "";
 
     const cleaned = {
       ...data,
       dateOfBirth: updatedDOB,
     };
 
-    // Compare with the original user data
     const changedFields = Object.entries(cleaned).reduce(
       (acc, [key, value]) => {
+        const raw = user?.dateOfBirth;
+        let parsed = parseISO(raw);
+        if (!isValid(parsed)) {
+          parsed = parse(raw, "dd-MM-yyyy", new Date());
+        }
+
         const originalValue =
-          key === "dateOfBirth"
-            ? new Date(user?.dateOfBirth).toISOString()
+          key === "dateOfBirth" && isValid(parsed)
+            ? format(parsed, "dd-MM-yyyy")
             : user?.[key];
 
         if (value !== originalValue) acc[key] = value;
@@ -118,7 +142,7 @@ export default function ProfileInfo() {
       { userId: user._id, updateData: changedFields },
       {
         onSuccess: () => {
-          setProfileMode("view"); // switch back to view mode after successful update
+          setProfileMode("view");
         },
       },
     );

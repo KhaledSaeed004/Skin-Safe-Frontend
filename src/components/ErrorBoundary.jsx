@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Wrapper to inject `navigate` into a class component
 function ErrorBoundaryWithNavigate(props) {
