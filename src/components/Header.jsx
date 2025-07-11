@@ -60,6 +60,7 @@ function Header() {
 
   const handleLogout = () => {
     logout();
+    navigate("/login");
   };
 
   const query = useSearchStore((s) => s.query);

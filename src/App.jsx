@@ -33,6 +33,7 @@ const ProfileSettings = lazy(() => import("./pages/Profile/ProfileSettings"));
 
 import ErrorBoundary from "./components/ErrorBoundary";
 import PageSuspense from "./components/PageSuspense";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,6 +48,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster position="top-right" />
+      <ReactQueryDevtools initialIsOpen={false} />
       <BrowserRouter>
         <ErrorBoundary>
           <Suspense fallback={<PageSuspense />}>

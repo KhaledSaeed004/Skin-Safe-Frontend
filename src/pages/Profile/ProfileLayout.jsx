@@ -6,7 +6,7 @@ import {
   UserIcon,
 } from "../../utils/Icons";
 
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import avatar from "/user_avatar.png";
 import Logo from "../../components/ui/Logo";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
@@ -17,6 +17,7 @@ import { useUserQuery } from "../../features/auth/useUserQuery";
 export default function ProfileLayout() {
   const { logout } = useAuth();
   const { user, isLoading, error } = useUserQuery();
+  const navigate = useNavigate();
 
   if (isLoading || !user) {
     return (
@@ -27,6 +28,11 @@ export default function ProfileLayout() {
   }
 
   const { name } = user;
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-100">
@@ -98,7 +104,7 @@ export default function ProfileLayout() {
             <span className="text-sm font-medium text-gray-700">{name}</span>
           </div>
           <button
-            onClick={logout}
+            onClick={handleLogout}
             className="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-red-500/10 hover:text-red-500"
           >
             <LogOutIcon />
