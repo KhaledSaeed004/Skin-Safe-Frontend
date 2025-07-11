@@ -31,7 +31,7 @@ const teamMembers = [
     email: "#",
   },
   {
-    name: "Renad",
+    name: "Renad Elmaghraby",
     title: "Team Member",
     img: "/team/renad.jpg",
     linkedin: "#",
