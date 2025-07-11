@@ -162,7 +162,7 @@ export default function ProfileInfo() {
           <div className="relative">
             <div className="h-40 w-40 overflow-hidden rounded-full border-4 border-blue-100 bg-gray-200">
               <img
-                src="/doctor-full-body.png"
+                src="/user_avatar.png"
                 alt="Profile"
                 className="h-full w-full object-cover"
               />

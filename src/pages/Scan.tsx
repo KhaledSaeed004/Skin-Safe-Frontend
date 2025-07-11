@@ -1,169 +1,65 @@
 import { useState, useRef, DragEvent, ChangeEvent } from "react";
 import Header from "../components/Header";
 import Button from "../components/ui/Button";
-
-// Simple icon components to avoid external dependencies
-const CameraIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="40"
-    height="40"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
-    <circle cx="12" cy="13" r="3"></circle>
-  </svg>
-);
-
-const UploadIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-    <polyline points="17 8 12 3 7 8"></polyline>
-    <line x1="12" y1="3" x2="12" y2="15"></line>
-  </svg>
-);
-
-const CheckIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="20 6 9 17 4 12"></polyline>
-  </svg>
-);
-
-const AlertCircleIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="12" cy="12" r="10"></circle>
-    <line x1="12" y1="8" x2="12" y2="12"></line>
-    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-  </svg>
-);
-
-const XIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <line x1="18" y1="6" x2="6" y2="18"></line>
-    <line x1="6" y1="6" x2="18" y2="18"></line>
-  </svg>
-);
+import {
+  AlertCircleIcon,
+  CameraIconAlt,
+  CheckIcon,
+  UploadIcon,
+  XIcon,
+} from "../utils/Icons";
+import { cn } from "../utils/cn";
+import { useScanSkin } from "../features/scan/useScanSkin";
 
 export default function Scan() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [status, setStatus] = useState<
-    "idle" | "uploading" | "success" | "error"
-  >("idle");
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const { uploadScan, isLoading, error, cancel } = useScanSkin({
+    onProgress: setUploadProgress,
+  });
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const selectedFile = e.target.files[0];
-      setFile(selectedFile);
+    const selected = e.target.files?.[0];
+    if (!selected) return;
+    setFile(selected);
 
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-  };
-
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
+    const reader = new FileReader();
+    reader.onload = (e) => setPreview(e.target?.result as string);
+    reader.readAsDataURL(selected);
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
 
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const droppedFile = e.dataTransfer.files[0];
-      setFile(droppedFile);
+    const dropped = e.dataTransfer.files?.[0];
+    if (!dropped) return;
+    setFile(dropped);
 
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(droppedFile);
-    }
+    const reader = new FileReader();
+    reader.onload = (e) => setPreview(e.target?.result as string);
+    reader.readAsDataURL(dropped);
   };
 
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
-  };
+  const triggerFileInput = () => fileInputRef.current?.click();
 
-  const handleAnalyze = async () => {
+  const handleAnalyze = () => {
     if (!file) return;
-
-    setStatus("uploading");
+    setStatus("idle");
     setUploadProgress(0);
 
-    // Simulate upload progress
-    const progressInterval = setInterval(() => {
-      setUploadProgress((prev) => {
-        const newProgress = prev + 5;
-        if (newProgress >= 100) {
-          clearInterval(progressInterval);
-          setTimeout(() => {
-            setStatus("success");
-          }, 500);
-          return 100;
-        }
-        return newProgress;
-      });
-    }, 200);
+    uploadScan(
+      { image: file },
+      {
+        onSuccess: () => setStatus("success"),
+        onError: () => setStatus("error"),
+      },
+    );
   };
 
   const resetUpload = () => {
@@ -176,7 +72,11 @@ export default function Scan() {
   return (
     <>
       <Header />
-      <div className="flex min-h-screen items-center justify-center bg-[#FFFF]">
+      <div className="flex min-h-screen items-center justify-center bg-[#FFFF] ps-4 pe-26">
+        <div className="">
+          <img src="/ScanGuide.png" alt="Scanning Guide" />
+        </div>
+
         <div className="mx-auto mt-8 max-w-md rounded-xl bg-[#D6E7FB] p-8 px-4 shadow-sm">
           <div className="mb-6 text-center">
             <h1 className="text-2xl font-semibold text-blue-600">
@@ -189,39 +89,55 @@ export default function Scan() {
 
           {!file ? (
             <div
-              className={`rounded-lg border-2 border-dashed p-8 transition-all ${
+              className={cn(
+                "flex min-h-[300px] items-center justify-center rounded-lg border-2 border-dashed p-8 transition-all",
                 isDragging
                   ? "border-blue-500 bg-blue-50"
-                  : "border-gray-300 hover:border-blue-400"
-              }`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
+                  : "border-gray-300 hover:border-blue-400",
+              )}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragging(true);
+              }}
+              onDragLeave={(e) => {
+                e.preventDefault();
+                setIsDragging(false);
+              }}
               onDrop={handleDrop}
-              onClick={triggerFileInput}
             >
-              <div className="flex cursor-pointer flex-col items-center justify-center">
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  accept="image/*"
-                  className="hidden"
-                />
-                <div className="mb-3 h-12 w-12 text-blue-500">
-                  <CameraIcon />
+              {isDragging ? (
+                <div className="flex flex-col items-center justify-center space-y-4 text-blue-600">
+                  <UploadIcon size={40} />
+                  <p className="text-lg font-medium">Drop your photo here</p>
+                  <p className="text-sm text-gray-600">
+                    Release to start upload
+                  </p>
                 </div>
-                <p className="mb-2 text-lg font-medium">
-                  Drag Photos to Upload
-                </p>
-                <p className="mb-4 text-sm text-gray-500">or click to browse</p>
-                <Button className="rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600">
-                  Select Photo
-                </Button>
-              </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center space-y-3">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <div className="h-12 w-12 text-blue-500">
+                    <CameraIconAlt />
+                  </div>
+                  <p className="text-lg font-medium">Drag Photos to Upload</p>
+                  <p className="text-sm text-gray-500">or click to browse</p>
+                  <Button
+                    onClick={triggerFileInput}
+                    className="cursor-pointer rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+                  >
+                    Select Photo
+                  </Button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="space-y-6">
-              {/* Preview */}
               <div className="relative overflow-hidden rounded-lg border border-gray-200">
                 {preview && (
                   <div className="relative">
@@ -232,20 +148,21 @@ export default function Scan() {
                     />
                     <button
                       onClick={resetUpload}
-                      className="bg-opacity-70 hover:bg-opacity-90 absolute top-2 right-2 rounded-full bg-gray-800 p-1 text-white"
+                      className="bg-opacity-70 hover:bg-opacity-90 absolute top-2 right-2 cursor-pointer rounded-full bg-gray-800 p-1 text-white"
                     >
                       <XIcon />
                     </button>
                   </div>
                 )}
-
                 <div className="bg-gray-50 p-4">
                   <div className="flex items-start space-x-3">
                     <div className="mt-1 flex-shrink-0 text-blue-500">
                       <UploadIcon />
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium">{file.name}</p>
+                      <p className="max-w-xs truncate font-medium">
+                        {file.name}
+                      </p>
                       <p className="text-sm text-gray-500">
                         {(file.size / 1024 / 1024).toFixed(2)} MB · {file.type}
                       </p>
@@ -254,8 +171,7 @@ export default function Scan() {
                 </div>
               </div>
 
-              {/* Progress */}
-              {status === "uploading" && (
+              {isLoading && (
                 <div className="space-y-2">
                   <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
                     <div
@@ -266,18 +182,23 @@ export default function Scan() {
                   <p className="text-center text-sm text-gray-600">
                     {uploadProgress}% processed
                   </p>
+                  <div className="text-center">
+                    <button
+                      onClick={cancel}
+                      className="text-sm text-red-500 hover:underline"
+                    >
+                      Cancel Upload
+                    </button>
+                  </div>
                 </div>
               )}
 
-              {/* Status messages */}
               {status === "success" && (
                 <div className="flex items-center rounded-lg border border-green-200 bg-green-50 p-4">
                   <div className="mr-3 text-green-500">
                     <CheckIcon />
                   </div>
-                  <p className="text-green-700">
-                    Photo analyzed successfully! View your results below.
-                  </p>
+                  <p className="text-green-700">Photo analyzed successfully!</p>
                 </div>
               )}
 
@@ -287,35 +208,25 @@ export default function Scan() {
                     <AlertCircleIcon />
                   </div>
                   <p className="text-red-700">
-                    There was a problem analyzing your photo. Please try again.
+                    {error?.message ||
+                      "There was a problem analyzing your photo."}
                   </p>
                 </div>
               )}
 
-              {/* Action buttons */}
               <div className="flex justify-center space-x-4">
-                {status === "idle" && (
+                {!isLoading && status === "idle" && (
                   <button
                     onClick={handleAnalyze}
-                    className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+                    className="cursor-pointer rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
                   >
                     Analyze Skin Condition
-                  </button>
-                )}
-
-                {status === "success" && (
-                  <button
-                    onClick={resetUpload}
-                    className="rounded-lg bg-gray-200 px-6 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-300"
-                  >
-                    Upload Another Photo
                   </button>
                 )}
               </div>
             </div>
           )}
 
-          {/* Privacy note */}
           <div className="mx-auto mt-8 max-w-md text-center text-xs text-gray-500">
             <p>
               Your privacy matters. Photos are encrypted and only used for

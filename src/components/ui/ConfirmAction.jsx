@@ -7,7 +7,7 @@ function ConfirmAction({ children }) {
 }
 
 function Title({ children }) {
-  return <h3 className="text-xl font-medium">{children}</h3>;
+  return <h3 className="text-xl font-semibold capitalize">{children}</h3>;
 }
 
 function Body({ children }) {

@@ -50,6 +50,7 @@ function Window({ children, name }) {
     <div className="bg-backdrop-color fixed inset-0 z-[1000] bg-black/50 backdrop-blur-sm transition-all">
       <div
         ref={ref}
+        data-modal-root
         className="fixed top-1/2 left-1/2 w-auto -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-lg shadow-lg transition-all"
       >
         <button
