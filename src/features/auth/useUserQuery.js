@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "./useAuth";
-import parseJwt from "../../utils/parseJWT";
+import parseJwt from "../../utils/parseJwt";
 import { getAuthenticatedUser } from "../../services/api/apiAuth";
 
 export function useUserQuery() {

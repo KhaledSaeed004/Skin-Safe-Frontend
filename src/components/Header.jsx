@@ -15,13 +15,24 @@ import { useAuth } from "../features/auth/useAuth";
 import Notifications from "./ui/Notifications";
 import Menus from "./ui/Menus";
 import Spinner from "./ui/Spinner";
+import { useSearchStore } from "../features/search/searchStore";
+import SearchDropdown from "./Search/SearchDropdown";
 
 function Header() {
   const header = useRef(null);
+  const searchRef = useRef(null);
   const { loading, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (window.scrollY > 0) {
+      header.current.classList.add("bg-[#D6E7FB]");
+      header.current.classList.add("border-b-blue-300");
+    } else {
+      header.current.classList.remove("bg-[#D6E7FB]");
+      header.current.classList.remove("border-b-blue-300");
+    }
+
     const onScroll = () => {
       if (window.scrollY > 0) {
         header.current.classList.add("bg-[#D6E7FB]");
@@ -32,13 +43,40 @@ function Header() {
       }
     };
 
-    window.addEventListener("scroll", onScroll);
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        closeDropdown();
+      }
+    };
 
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleLogout = () => {
     logout();
+  };
+
+  const query = useSearchStore((s) => s.query);
+  const setQuery = useSearchStore((s) => s.setQuery);
+  const open = useSearchStore((s) => s.open);
+  const setOpen = useSearchStore((s) => s.setOpen);
+  const closeDropdown = useSearchStore((s) => s.closeDropdown);
+  const loadData = useSearchStore((s) => s.loadData);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const handleSearchInput = (e) => {
+    const val = e.target.value;
+    setQuery(val);
+    setOpen(true);
   };
 
   return (
@@ -53,6 +91,7 @@ function Header() {
             <Logo className="h-full w-40" />
           </Link>
           <form
+            ref={searchRef}
             role="search"
             className="group relative flex transition-all duration-300 ease-in-out focus-within:grow"
           >
@@ -61,8 +100,14 @@ function Header() {
               placeholder="Search for doctors, articles..."
               aria-label="Search doctors, articles..."
               className="w-full pl-10 transition-all duration-300 ease-in-out group-focus-within:w-full"
+              value={query}
+              onChange={handleSearchInput}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") closeDropdown();
+              }}
             />
             <MagnifyingGlassIcon className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400 transition-all duration-300 ease-out group-focus-within:text-[#4a90e2]" />
+            <SearchDropdown />
           </form>
         </div>
 

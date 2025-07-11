@@ -23,6 +23,8 @@ import ProfileHistory from "./pages/Profile/ProfileHistory";
 import ProfileAppointments from "./pages/Profile/ProfileAppointments";
 import ProfileSettings from "./pages/Profile/ProfileSettings";
 import Article from "./pages/Article";
+import Report from "./pages/Report";
+import Doctors from "./pages/Doctors";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,19 +46,18 @@ function App() {
           <Route element={<AppLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/history" element={<History />} />
             <Route path="/articles" element={<Articles />} />
             <Route path="/articles/:id" element={<Article />} />
-            <Route path="/doctor">
-              <Route path=":id" element={<DoctorProfile />} />
-            </Route>
+            <Route path="/doctors" element={<Doctors />} />
+            <Route path="/doctor/:id" element={<DoctorProfile />} />
           </Route>
 
           <Route element={<ProtectedRoute />}>
             <Route path="/user" element={<ProfileLayout />}>
               <Route index element={<Navigate to="profile" replace />} />
               <Route path="profile" element={<ProfileInfo />} />
-              <Route path="history" element={<ProfileHistory />} />
+              <Route path="reports" element={<ProfileHistory />} />
+              <Route path="reports/:id" element={<Report />} />
               <Route path="appointments" element={<ProfileAppointments />} />
               <Route path="settings" element={<ProfileSettings />} />
             </Route>

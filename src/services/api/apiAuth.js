@@ -125,3 +125,21 @@ export async function getAuthenticatedUser({ token, userId }) {
   const data = await response.json();
   return data;
 }
+
+export async function getSpecifiedUser({ token, userId }) {
+  const response = await fetch(`${BASE_URL}/api/v1/users/user/${userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to fetch user data");
+  }
+
+  const data = await response.json();
+  return data;
+}

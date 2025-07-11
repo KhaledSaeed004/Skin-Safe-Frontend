@@ -7,20 +7,17 @@ import { SkeletonReviewCard } from "./ReviewCardSkeleton";
 
 const REVIEWS_PER_PAGE = 4;
 
-export default function DoctorReviews({ id }) {
-  const { reviews = [], isLoading, error } = useDoctroReviews(id);
+export default function DoctorReviews({ reviews }) {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = useMemo(() => {
-    if (isLoading || !Array.isArray(reviews)) return 1;
     return Math.ceil(reviews.length / REVIEWS_PER_PAGE);
-  }, [reviews, isLoading]);
+  }, [reviews]);
 
-  const getVisibleReviews = useMemo(() => {
-    if (isLoading || !Array.isArray(reviews)) return [];
+  const visibleReviews = useMemo(() => {
     const start = (currentPage - 1) * REVIEWS_PER_PAGE;
     const end = start + REVIEWS_PER_PAGE;
     return reviews.slice(start, end);
-  }, [currentPage, reviews, isLoading]);
+  }, [currentPage, reviews]);
 
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -66,15 +63,9 @@ export default function DoctorReviews({ id }) {
     return pages;
   };
 
-  return isLoading ? (
+  return reviews?.length > 0 ? (
     <div className="mt-4 space-y-4">
-      {Array.from({ length: REVIEWS_PER_PAGE }).map((_, i) => (
-        <SkeletonReviewCard key={i} />
-      ))}
-    </div>
-  ) : reviews?.length > 0 ? (
-    <div className="mt-4 space-y-4">
-      {getVisibleReviews().map((review, index) => (
+      {visibleReviews.map((review, index) => (
         <ReviewCard key={index} {...review} />
       ))}
 

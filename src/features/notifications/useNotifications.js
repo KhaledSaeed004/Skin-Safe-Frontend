@@ -4,7 +4,7 @@ import { getNotifications } from "../../services/api/apiNotifications";
 export function useNotifications() {
   const {
     data: notifications,
-    isLoading,
+    isPending: isLoading,
     error,
   } = useQuery({
     queryKey: ["notifications"],

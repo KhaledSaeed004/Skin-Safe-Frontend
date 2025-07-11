@@ -7,7 +7,7 @@ import {
 } from "../../utils/Icons";
 
 import { Link, NavLink, Outlet } from "react-router-dom";
-import avatar from "/doctor-full-body.png";
+import avatar from "/user_avatar.png";
 import Logo from "../../components/ui/Logo";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../../features/auth/useAuth";
@@ -50,7 +50,7 @@ export default function ProfileLayout() {
             Profile
           </NavLink>
           <NavLink
-            to="history"
+            to="reports"
             className={({ isActive }) =>
               `flex items-center gap-3 rounded-md p-3 ${
                 isActive ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"

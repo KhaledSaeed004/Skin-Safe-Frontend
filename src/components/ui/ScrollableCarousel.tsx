@@ -49,7 +49,7 @@ const ScrollableCarousel: React.FC<ScrollableCarouselProps> = ({
   return (
     <div
       ref={containerRef}
-      className={cn("flex space-x-4 overflow-x-auto pb-4", className)}
+      className={cn("flex space-x-4 overflow-x-auto p-2 pb-4", className)}
       style={{
         WebkitMaskImage: mask,
         WebkitMaskRepeat: "no-repeat",

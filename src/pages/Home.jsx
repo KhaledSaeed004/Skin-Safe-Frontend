@@ -14,14 +14,16 @@ import DoctorCard from "../components/Home/DoctorCard";
 import ScrollableCarousel from "../components/ui/ScrollableCarousel";
 import { useDoctors } from "../features/home/useDoctors";
 import DoctorCardSkeleton from "../components/Home/DoctorCardSkeleton";
+import { useRecentlySearchedDoctors } from "../features/search/useRecentlySearchedDoctors";
+import RecentDoctorCard from "../components/Home/RecentDoctorCard";
 
 function Home() {
   const { doctors, isLoading, error } = useDoctors();
-  // const { recentlySearchedDoctors, isLoading: isLoadingRecentSearches, error: recentSearchesError } = useRecentlySearchedDoctors();
-  const { recentlySearchedDoctors, isLoading: isLoadingRecentSearches } = {
-    recentlySearchedDoctors: [],
-    isLoading: false,
-  }; // Mocking the hook for now
+  const {
+    recentlySearchedDoctors,
+    isLoading: isLoadingRecentSearches,
+    error: recentSearchesError,
+  } = useRecentlySearchedDoctors();
 
   return (
     <>
@@ -103,7 +105,7 @@ function Home() {
         ) : recentlySearchedDoctors?.length > 0 ? (
           <ScrollableCarousel>
             {recentlySearchedDoctors.map((doctor) => (
-              <DoctorCard key={doctor.id} doctor={doctor} />
+              <RecentDoctorCard key={doctor._id} doctor={doctor?.doctor} />
             ))}
           </ScrollableCarousel>
         ) : (

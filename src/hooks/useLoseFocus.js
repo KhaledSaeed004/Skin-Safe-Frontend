@@ -5,7 +5,14 @@ export function useLoseFocus({ onClickAway, preventbubbling = true, id }) {
 
   useEffect(() => {
     const handleClickAway = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+      const clickedInsideAnotherModal = e.target.closest("[data-modal-root]");
+
+      if (
+        ref.current &&
+        !ref.current.contains(e.target) &&
+        !clickedInsideAnotherModal
+      ) {
+        console.log("Clicked outside the component");
         onClickAway();
       }
     };
