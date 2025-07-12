@@ -20,7 +20,7 @@ export async function saveRecentSearch({ doctorId, token }) {
 }
 
 export async function getRecentSearches({ token }) {
-  const response = await fetch(`${BASE_URL}/api/v1/recentSearch/getDoctors`, {
+  const response = await fetch(`${BASE_URL}/api/v1/recentSearch/getMyDoctors`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

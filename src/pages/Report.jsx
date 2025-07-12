@@ -17,7 +17,8 @@ export default function Report() {
   const { report, isLoading } = useReport(id);
 
   const userId = report?.user;
-  const { typeDetected, scannedImage, confidence, createdAt } = report || {};
+  const { typeDetected, scannedImage, confidence, createdAt, comment } =
+    report || {};
   const { user: userData, isLoading: isLoadingUser } = useSpecificUser(userId);
   const { name, gender, skinTone, phoneNumber } = userData || {};
 
@@ -172,9 +173,8 @@ export default function Report() {
                 Comments
               </p>
               <p className="leading-relaxed text-gray-800">
-                You should visit a dermatologist specialized in skin cancer.
-                Imaging (CT/MRI/PET) is recommended every 3–6 months based on
-                disease stage.
+                {comment ||
+                  "You should visit a dermatologist specialized in skin cancer. Imaging (CT/MRI/PET) is recommended every 3–6 months based on disease stage."}
               </p>
             </div>
           </div>
