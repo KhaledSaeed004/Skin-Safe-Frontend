@@ -62,7 +62,7 @@ function Home() {
           </span>
           <span className="text-primary absolute top-10/12 -right-10 rounded-lg bg-white px-3 py-2 shadow-lg">
             <Medical className="text-primary mr-2 inline h-5 w-5" />
-            Accurate diagnosis
+            Experienced Doctors
           </span>
           <div className="overflow-hidden rounded-full">
             <img
@@ -105,7 +105,7 @@ function Home() {
         ) : recentlySearchedDoctors?.length > 0 ? (
           <ScrollableCarousel>
             {recentlySearchedDoctors.map((doctor) => (
-              <RecentDoctorCard key={doctor._id} doctor={doctor?.doctor} />
+              <RecentDoctorCard key={doctor._id} doctor={doctor} />
             ))}
           </ScrollableCarousel>
         ) : (
