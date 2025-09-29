@@ -110,13 +110,3 @@ To format code:
 npm run format
 ```
 
----
-
-## 🧩 TODO
-
-- [ ] Finalize backend service URLs & API integration
-- [ ] Add `.env` file
-- [ ] Decide on authentication flow, encryption and storage strategy
-- [ ] Discuss other project aspects with the rest of the team
-- [ ] بتنجان مقلي
-
